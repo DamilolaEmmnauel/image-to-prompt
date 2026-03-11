@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing prompt' });
     }
 
-    const model = process.env.IMAGE_MODEL || 'gemini-2.0-flash-exp';
+    const model = req.body.model || 'gemini-3-pro-image-preview';
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,

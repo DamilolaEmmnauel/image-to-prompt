@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing base64 or mimeType' });
     }
 
-    const model = process.env.OPENAI_MODEL || 'gpt-4o';
+    const model = req.body.model || 'gpt-5.2';
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',

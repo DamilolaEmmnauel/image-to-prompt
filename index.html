@@ -43,23 +43,6 @@
       letter-spacing: -0.3px;
     }
 
-    .header-btn {
-      padding: 8px 16px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #111;
-      background: #fff;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      font-family: inherit;
-    }
-
-    .header-btn:hover {
-      background: #fafafa;
-      border-color: #ccc;
-    }
 
     /* Main */
     main {
@@ -460,111 +443,6 @@
       opacity: 1;
     }
 
-    /* Modal */
-    .modal-bg {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 20px;
-    }
-
-    .modal-bg.show {
-      display: flex;
-    }
-
-    .modal {
-      background: #fff;
-      border-radius: 12px;
-      padding: 28px;
-      max-width: 420px;
-      width: 100%;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-    }
-
-    .modal h3 {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .modal p {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 24px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-label {
-      display: block;
-      font-size: 12px;
-      font-weight: 500;
-      color: #555;
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 10px 12px;
-      font-size: 14px;
-      font-family: ui-monospace, monospace;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      background: #fff;
-      color: #111;
-    }
-
-    .form-input:focus {
-      outline: none;
-      border-color: #999;
-    }
-
-    .form-select {
-      width: 100%;
-      padding: 10px 12px;
-      font-size: 14px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      background: #fff;
-      color: #111;
-      cursor: pointer;
-      font-family: inherit;
-    }
-
-    .form-select:focus {
-      outline: none;
-      border-color: #999;
-    }
-
-    .form-hint {
-      font-size: 12px;
-      color: #999;
-      margin-top: 6px;
-    }
-
-    .form-hint a {
-      color: #111;
-    }
-
-    .modal-divider {
-      height: 1px;
-      background: #eee;
-      margin: 24px 0;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-    }
 
     /* Footer */
     footer {
@@ -584,7 +462,6 @@
     <div class="container">
       <div class="header-inner">
         <a href="#" class="logo">ImageJson</a>
-        <button class="header-btn" id="settingsBtn">Settings</button>
       </div>
     </div>
   </header>
@@ -682,48 +559,6 @@
 
   <div class="toast" id="toast">Copied!</div>
 
-  <div class="modal-bg" id="modalBg">
-    <div class="modal">
-      <h3>Settings</h3>
-      <p>Configure your API keys for image analysis and generation.</p>
-
-      <div class="form-group">
-        <label class="form-label">OpenAI API Key</label>
-        <input type="password" class="form-input" id="openaiKey" placeholder="sk-...">
-        <p class="form-hint">Get key from <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a></p>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">OpenAI Model</label>
-        <select class="form-select" id="openaiModel">
-          <option value="gpt-5.2">GPT-5.2</option>
-          <option value="gpt-5.1">GPT-5.1</option>
-          <option value="gpt-5">GPT-5</option>
-        </select>
-      </div>
-
-      <div class="modal-divider"></div>
-
-      <div class="form-group">
-        <label class="form-label">Google API Key</label>
-        <input type="password" class="form-input" id="googleKey" placeholder="AIza...">
-        <p class="form-hint">Get key from <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com</a></p>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Image Model</label>
-        <select class="form-select" id="imageModel">
-          <option value="gemini-3-pro-image-preview">Nano Banana Pro</option>
-          <option value="gemini-2.5-flash-preview-image-generation">Nano Banana</option>
-        </select>
-      </div>
-
-      <div class="modal-actions">
-        <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
-        <button class="btn btn-primary" style="width:auto" id="saveBtn">Save</button>
-      </div>
-    </div>
-  </div>
 
   <script>
     const PROMPT = `Analyze this image in exhaustive detail and output a structured JSON prompt that could be used to recreate this exact image in an AI image generator. Be extremely precise and comprehensive.
@@ -803,25 +638,6 @@ Be extremely specific with colors (use descriptive terms like "dusty rose," "dee
     const toast = m => { $('toast').textContent = m; $('toast').classList.add('show'); setTimeout(() => $('toast').classList.remove('show'), 2000); };
     const progress = s => { ['step1','step2','step3'].forEach((x,i) => $(x).classList.toggle('active', i < s)); $('progressFill').style.width = s === 1 ? '33%' : s === 2 ? '66%' : '100%'; };
 
-    // Settings modal
-    $('settingsBtn').onclick = () => {
-      $('openaiKey').value = get('openai_key');
-      $('googleKey').value = get('google_key');
-      $('openaiModel').value = get('openai_model') || 'gpt-5.2';
-      $('imageModel').value = get('image_model') || 'gemini-3-pro-image-preview';
-      $('modalBg').classList.add('show');
-    };
-    $('cancelBtn').onclick = () => $('modalBg').classList.remove('show');
-    $('saveBtn').onclick = () => {
-      set('openai_key', $('openaiKey').value.trim());
-      set('google_key', $('googleKey').value.trim());
-      set('openai_model', $('openaiModel').value);
-      set('image_model', $('imageModel').value);
-      $('modalBg').classList.remove('show');
-      toast('Settings saved');
-    };
-    $('modalBg').onclick = e => { if (e.target === $('modalBg')) $('modalBg').classList.remove('show'); };
-
     // File handling
     function handleFile(f) {
       if (!f || !f.type.startsWith('image/')) return;
@@ -845,48 +661,22 @@ Be extremely specific with colors (use descriptive terms like "dusty rose," "dee
     $('uploadZone').ondrop = e => { e.preventDefault(); $('uploadZone').classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]); };
     document.onpaste = e => { const items = e.clipboardData?.items; if (items) for (let i of items) if (i.type.startsWith('image/')) { handleFile(i.getAsFile()); break; } };
 
-    // Demo response
-    function demo() {
-      const pick = a => a[Math.floor(Math.random() * a.length)];
-      const colors = ['dusty rose', 'deep burgundy', 'warm amber', 'slate blue', 'forest green', 'soft cream'];
-      const d = {
-        main_subject: { description: "Portrait subject", position: pick(['center', 'left third', 'right third']), pose_or_action: pick(['standing', 'seated', 'leaning']), facing_direction: pick(['toward camera', 'three-quarter', 'profile']) },
-        subject_details: { physical_attributes: "Adult, medium build", clothing: `${pick(['Tailored blazer', 'Casual sweater', 'Linen shirt'])} in ${pick(colors)}`, accessories: pick(['Minimal jewelry', 'Watch', 'None']), hair: pick(['Shoulder-length', 'Short', 'Long']) + " " + pick(['brown', 'black', 'blonde']), expression: pick(['Subtle smile', 'Contemplative', 'Confident']) },
-        environment: { setting: pick(['Studio', 'Outdoor', 'Indoor']), background: pick(['Neutral', 'Blurred', 'Textured']), foreground_elements: "None", props: pick(['None', 'Coffee cup', 'Book']) },
-        composition: { framing: pick(['Portrait', 'Half body', 'Full body']), aspect_ratio: pick(['3:4', '2:3', '1:1']), camera_angle: "Eye level", depth_of_field: pick(['Shallow', 'Medium', 'Deep']), focal_length_feel: pick(['85mm', '50mm', '35mm']) },
-        lighting: { type: pick(['Natural', 'Studio', 'Mixed']), direction: pick(['Front', 'Side', '45 degree']), quality: pick(['Soft', 'Hard', 'Diffused']), key_light: "Main source", fill_shadows: pick(['Soft', 'Medium', 'Deep']), highlights: "Natural", color_temperature: pick(['Warm', 'Neutral', 'Cool']) },
-        color_palette: { dominant_colors: [pick(colors), pick(colors)], accent_colors: [pick(colors)], overall_tone: pick(['Warm', 'Cool', 'Neutral']), color_harmony: pick(['Complementary', 'Analogous', 'Monochromatic']), saturation_level: pick(['Medium', 'High', 'Low']) },
-        style_and_aesthetic: { photography_style: pick(['Portrait', 'Editorial', 'Fashion']), artistic_style: "Photorealistic", mood: pick(['Elegant', 'Casual', 'Dramatic']), era_or_influence: "Contemporary", visual_references: pick(['Peter Lindbergh', 'Annie Leibovitz', 'Mario Testino']) },
-        technical_qualities: { image_quality: "Professional", sharpness: "Sharp on subject", contrast: "Medium", texture_rendering: "Detailed", noise_grain: "Clean" },
-        post_processing: { color_grading: pick(['Neutral', 'Warm tones', 'Film emulation']), vignette: pick(['Subtle', 'None']), filters: "None", retouching_level: "Natural" },
-        generation_prompt: ""
-      };
-      d.generation_prompt = `${d.style_and_aesthetic.photography_style} photograph, ${d.subject_details.physical_attributes}, ${d.main_subject.pose_or_action}, ${d.main_subject.facing_direction}. Wearing ${d.subject_details.clothing}. ${d.subject_details.expression} expression. ${d.environment.setting} setting with ${d.environment.background.toLowerCase()} background. ${d.composition.framing} framing, ${d.composition.depth_of_field.toLowerCase()} depth of field. ${d.lighting.type} ${d.lighting.quality.toLowerCase()} lighting from ${d.lighting.direction.toLowerCase()}. ${d.color_palette.overall_tone} color palette with ${d.color_palette.dominant_colors.join(' and ')}. ${d.style_and_aesthetic.mood} mood. ${d.technical_qualities.image_quality} quality.`;
-      return JSON.stringify(d, null, 2);
-    }
-
-    // API call
-    async function callAPI(base64, type) {
-      const key = get('openai_key');
-      if (!key) { await new Promise(r => setTimeout(r, 2500)); return demo(); }
-      const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    // API call via backend
+    async function callAPI(base64, mimeType) {
+      const res = await fetch('/api/analyze', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
-        body: JSON.stringify({
-          model: get('openai_model') || 'gpt-5.2',
-          max_completion_tokens: 4096,
-          messages: [{ role: 'user', content: [{ type: 'image_url', image_url: { url: `data:${type};base64,${base64}`, detail: 'high' } }, { type: 'text', text: PROMPT }] }]
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ base64, mimeType, prompt: PROMPT })
       });
-      if (!res.ok) throw new Error((await res.json()).error?.message || 'API error');
-      return (await res.json()).choices[0].message.content;
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'API error');
+      return data.content;
     }
 
-    // Generate
+    // Generate prompt
     async function generate() {
       if (!file) return;
-      if (!get('openai_key')) toast('Demo mode — add API key for real analysis');
-      
+
       $('submitBtn').disabled = true;
       $('submitBtn').textContent = 'Processing...';
       $('progressBox').classList.add('show');
@@ -894,23 +684,22 @@ Be extremely specific with colors (use descriptive terms like "dusty rose," "dee
       progress(1);
 
       try {
-        const data = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); });
-        const base64 = data.split(',')[1];
+        const dataUrl = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); });
+        const base64 = dataUrl.split(',')[1];
 
         $('progressLabel').textContent = 'Analyzing...';
         progress(2);
         $('analyzingBox').classList.add('show');
 
         let est = parseInt(get('avg_time')) || 15;
-        let rem = est;
         let start = Date.now();
         let done = false;
 
-        $('countdown').textContent = rem + 's';
+        $('countdown').textContent = est + 's';
         timer = setInterval(() => {
           if (done) return;
           const elapsed = Math.floor((Date.now() - start) / 1000);
-          rem = Math.max(0, est - elapsed);
+          const rem = Math.max(0, est - elapsed);
           $('countdown').textContent = rem > 0 ? rem + 's' : '+' + (elapsed - est) + 's';
         }, 1000);
 
@@ -927,7 +716,7 @@ Be extremely specific with colors (use descriptive terms like "dusty rose," "dee
 
         $('progressLabel').textContent = 'Complete';
         progress(3);
-        $('countdown').textContent = '✓';
+        $('countdown').textContent = '\u2713';
         $('outputArea').value = text;
         $('actions').classList.add('show');
 
@@ -957,93 +746,23 @@ Be extremely specific with colors (use descriptive terms like "dusty rose," "dee
       else toast('Generate a prompt first');
     };
 
-    // Image generation
+    // Image generation via backend
     async function genImage(prompt) {
-      const key = get('google_key');
-      if (!key) { toast('Add Google API key first'); $('modalBg').classList.add('show'); return; }
-
       $('genProgress').style.display = 'block';
       $('generateBtn').disabled = true;
 
       try {
-        const model = get('image_model') || 'gemini-3-pro-image-preview';
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`, {
+        const res = await fetch('/api/generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            contents: [{ parts: [{ text: prompt }] }], 
-            generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
-          })
+          body: JSON.stringify({ prompt })
         });
-
         const data = await res.json();
-        
-        if (!res.ok) {
-          throw new Error(data.error?.message || 'Generation failed');
-        }
+        if (!res.ok) throw new Error(data.error || 'Generation failed');
 
-        console.log('API Response:', JSON.stringify(data, null, 2));
-
-        // Look for image in response
-        let img = null;
-        
-        if (data.candidates && data.candidates.length > 0) {
-          const candidate = data.candidates[0];
-          
-          if (candidate.content?.parts) {
-            for (const part of candidate.content.parts) {
-              // Check for inlineData with image
-              if (part.inlineData) {
-                if (part.inlineData.mimeType?.startsWith('image/')) {
-                  img = part.inlineData.data;
-                  break;
-                }
-              }
-              // Check for fileData (alternative response format)
-              if (part.fileData) {
-                console.log('File data found:', part.fileData);
-              }
-            }
-          }
-          
-          // Check if generation was blocked
-          if (candidate.finishReason === 'SAFETY') {
-            throw new Error('Image generation blocked by safety filters. Try a different prompt.');
-          }
-          
-          if (candidate.finishReason === 'RECITATION') {
-            throw new Error('Generation blocked due to recitation policy.');
-          }
-        }
-        
-        // Check for prompt feedback
-        if (data.promptFeedback?.blockReason) {
-          throw new Error(`Prompt blocked: ${data.promptFeedback.blockReason}`);
-        }
-
-        if (img) {
-          $('genImage').src = `data:image/png;base64,${img}`;
-          $('genImageBox').style.display = 'block';
-          toast('Image generated');
-        } else {
-          // Log what we did receive for debugging
-          console.log('No image found. Full response:', data);
-          
-          // Check if there's text response explaining why
-          let textResponse = '';
-          if (data.candidates?.[0]?.content?.parts) {
-            for (const part of data.candidates[0].content.parts) {
-              if (part.text) textResponse += part.text;
-            }
-          }
-          
-          if (textResponse) {
-            throw new Error('Model returned text instead of image: ' + textResponse.substring(0, 100));
-          } else {
-            throw new Error('No image in response. The model may not support this prompt.');
-          }
-        }
-
+        $('genImage').src = `data:image/png;base64,${data.image}`;
+        $('genImageBox').style.display = 'block';
+        toast('Image generated');
       } catch (err) {
         console.error('Image generation error:', err);
         toast('Error: ' + err.message);
